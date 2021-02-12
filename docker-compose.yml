@@ -1,0 +1,40 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:12-alpine
+    restart: always  
+    container_name: postgres
+    ports:
+      - 5431:5432
+    expose:
+      - 5431
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: lumen
+
+  nginx:
+    container_name: nginx
+    build: images/nginx
+    command: nginx -g "daemon off;"
+    links:
+      - php
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+
+  php:
+    container_name: php
+    build: images/php
+    volumes:
+      - ./lumen:/var/www/html
+    working_dir: /var/www/html/app/public
+    command: php-fpm
+    links:
+      - db:db
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
