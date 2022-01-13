@@ -1,4 +1,4 @@
-# API Wallet BTC Test Eduuz
+# API Wallet BTC Test
 
 Neste projeto foi utilizado:
   - Lumen Framework
